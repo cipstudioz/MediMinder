@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("theme")||"dark")}catch(e){document.documentElement.setAttribute("data-theme","dark")}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MediMinder — Medicine Reminder &amp; Health Companion</title>
 <meta name="description" content="MediMinder is a free, offline medicine reminder app with doctor appointments, medical records, adherence tracking and family profiles. No account, no ads, no tracking.">
@@ -22,7 +23,26 @@
     --c-pink: #e3a2a4;
     --c-purple: #c3a8cf;
     --c-teal: #94c5be;
+    --header-bg: rgba(15, 22, 38, 0.9);
   }
+  :root[data-theme="light"] {
+    --bg: #f5f9fd;
+    --bg-soft: #eaf3fa;
+    --surface: #ffffff;
+    --text: #1a2233;
+    --muted: #5d6b85;
+    --border: #d8e4f0;
+    --accent: #2a8fbd;
+    --header-bg: rgba(255, 255, 255, 0.9);
+    --c-green: #3d8a56;
+  }
+  .theme-btn {
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+    border: 1px solid var(--border); background: var(--surface); color: var(--text);
+    font-size: 1.05rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  .theme-btn:hover { border-color: var(--accent); }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
@@ -38,7 +58,7 @@
   /* Header */
   header.site {
     position: sticky; top: 0; z-index: 20;
-    background: rgba(15, 22, 38, 0.9);
+    background: var(--header-bg);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--border);
   }
@@ -65,6 +85,7 @@
   }
   .btn-primary { background: var(--accent); color: #0a1522; }
   .btn-primary:hover { filter: brightness(1.08); }
+  :root[data-theme="light"] .btn-primary { color: #fff; }
   .btn-outline { border-color: var(--border); color: var(--text); }
   .btn-outline:hover { border-color: var(--accent); }
 
@@ -201,7 +222,7 @@
 
 <header class="site" id="top">
   <div class="wrap nav">
-    <a class="brand" href="#top" aria-label="MediMinder home">
+    <a class="brand" href="./index.html" aria-label="MediMinder home">
       <img src="assets/logo-full.png" alt="MediMinder logo">
     </a>
     <nav class="nav-links">
@@ -210,7 +231,10 @@
       <a href="#privacy">Privacy</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.cipstudioz.mediminder" target="_blank" rel="noopener">Get it on Google Play</a>
+    <div class="nav-right">
+      <button class="theme-btn" id="theme-toggle" aria-label="Toggle light/dark theme">🌙</button>
+      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.cipstudioz.mediminder" target="_blank" rel="noopener">Get it on Google Play</a>
+    </div>
   </div>
 </header>
 
@@ -322,7 +346,7 @@
         <li><span class="tick">✓</span> Export everything to a file — including Google Drive — and restore it anytime</li>
       </ul>
       <div class="privacy-links">
-        <a href="privacy/">Read the full Privacy Policy <span class="arrow">→</span></a>
+        <a href="privacy/index.html">Read the full Privacy Policy <span class="arrow">→</span></a>
         <a href="https://play.google.com/store/apps/datasafety?id=com.cipstudioz.mediminder" target="_blank" rel="noopener">See Google Play's Data safety report <span class="arrow">→</span></a>
         <a href="mailto:cipstudioz@gmail.com">Email a privacy question <span class="arrow">→</span></a>
       </div>
@@ -407,7 +431,7 @@
   <div class="wrap footer-row">
     <div>© 2026 CIP Studioz. All rights reserved.</div>
     <div class="footer-links">
-      <a href="privacy/index.html">Privacy Policy</a>
+      <a href="privacy/">Privacy Policy</a>
       <a href="https://play.google.com/store/apps/datasafety?id=com.cipstudioz.mediminder" target="_blank" rel="noopener">Data Safety</a>
       <a href="mailto:cipstudioz@gmail.com">Contact</a>
       <a href="https://play.google.com/store/apps/details?id=com.cipstudioz.mediminder" target="_blank" rel="noopener">Google Play</a>
@@ -415,5 +439,18 @@
   </div>
 </footer>
 
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('theme-toggle');
+  function sync(){ btn.textContent = root.getAttribute('data-theme')==='dark' ? '🌙' : '☀️'; }
+  btn.addEventListener('click',function(){
+    var t = root.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme',t);
+    try{localStorage.setItem('theme',t)}catch(e){}
+    sync();
+  });
+  sync();
+})();
+</script>
 </body>
 </html>

@@ -1,102 +1,83 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("theme")||"dark")}catch(e){document.documentElement.setAttribute("data-theme","dark")}</script>
+  <link rel="icon" type="image/png" href="../assets/logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy – MediMinder</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; }
+  :root {
+    --bg: #0f1626;
+    --bg-soft: #141d33;
+    --surface: #182444;
+    --text: #eef1f8;
+    --muted: #9aa4bd;
+    --border: #263356;
+    --accent: #7ec8e3;
 
-    :root[data-theme="dark"] {
-      --bg-start: #121826;
-      --bg-end: #1b2436;
-      --card-bg: #1e2d40;
-      --text-main: #eef2f8;
-      --text-body: #c7d0dd;
-      --text-muted: #8b96a8;
-      --accent: #8ad8f7;
-      --accent-strong: #5cb8e4;
-      --border: #2a3550;
-      --card-shadow: rgba(0, 0, 0, 0.35);
-      --header-start: #1e2d40;
-      --header-end: #121826;
-      --header-text: #eef2f8;
-      --header-tagline: #8ad8f7;
-    }
-
-    :root[data-theme="light"] {
-      --bg-start: #f0f8ff;
-      --bg-end: #f9f6f0;
-      --card-bg: #ffffff;
-      --text-main: #1a1a2e;
-      --text-body: #444444;
-      --text-muted: #888888;
-      --accent: #5cb8e4;
-      --accent-strong: #5cb8e4;
-      --border: #e8f4fb;
-      --card-shadow: rgba(90, 184, 228, 0.1);
-      --header-start: #5cb8e4;
-      --header-end: #8ad8f7;
-      --header-text: #ffffff;
-      --header-tagline: #ffffff;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: linear-gradient(180deg, var(--bg-start) 0%, var(--bg-end) 100%);
-      color: var(--text-main);
-      line-height: 1.7;
-      min-height: 100vh;
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-
-    header {
-      position: relative;
-      background: linear-gradient(135deg, var(--header-start) 0%, var(--header-end) 100%);
-      padding: 40px 20px 32px;
-      text-align: center;
-      color: var(--header-text);
-      transition: background 0.3s ease;
-    }
-
-    header img {
-      width: 110px;
-      height: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
-    }
-
-    header p.tagline {
-      font-size: 0.95rem;
-      opacity: 0.9;
-      margin-top: 8px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      color: var(--header-tagline);
-    }
-
-    #theme-toggle {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(255, 255, 255, 0.25);
-      color: #fff;
-      font-size: 1.2rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s ease;
-    }
-
-    #theme-toggle:hover {
-      background: rgba(255, 255, 255, 0.4);
-    }
-
+    --c-blue: #9ecfe8;
+    --c-green: #a8d5b5;
+    --c-yellow: #e6c674;
+    --c-pink: #e3a2a4;
+    --c-purple: #c3a8cf;
+    --c-teal: #94c5be;
+    --header-bg: rgba(15, 22, 38, 0.9);
+  }
+  :root[data-theme="light"] {
+    --bg: #f5f9fd;
+    --bg-soft: #eaf3fa;
+    --surface: #ffffff;
+    --text: #1a2233;
+    --muted: #5d6b85;
+    --border: #d8e4f0;
+    --accent: #2a8fbd;
+    --header-bg: rgba(255, 255, 255, 0.9);
+    --c-green: #3d8a56;
+  }
+  .theme-btn {
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+    border: 1px solid var(--border); background: var(--surface); color: var(--text);
+    font-size: 1.05rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  .theme-btn:hover { border-color: var(--accent); }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  a { color: var(--accent); }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+  /* Header */
+  header.site {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--header-bg);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 10px; padding-bottom: 10px; }
+  .brand { display: flex; align-items: center; flex-shrink: 0; }
+  .brand img { height: 56px; width: 56px; border-radius: 14px; display: block; }
+  .nav-links { display: flex; gap: 22px; font-size: .92rem; font-weight: 600; }
+  .nav-links a { color: var(--muted); text-decoration: none; white-space: nowrap; }
+  .nav-links a:hover { color: var(--text); }
+  .nav .btn-primary { flex-shrink: 0; white-space: nowrap; }
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+    .brand img { height: 44px; width: 44px; border-radius: 11px; }
+    .nav .btn-primary { padding: 9px 14px; font-size: .82rem; }
+  }
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: .92rem;
+    text-decoration: none;
+    border: 1px solid transparent;
+  }
+  .btn-primary { background: var(--accent); color: #0a1522; }
+  .btn-primary:hover { filter: brightness(1.08); }
+  :root[data-theme="light"] .btn-primary { color: #fff; }
     main {
       max-width: 780px;
       margin: 40px auto;
@@ -104,18 +85,18 @@
     }
 
     .card {
-      background: var(--card-bg);
+      background: var(--surface);
       border-radius: 16px;
       padding: 32px 36px;
       margin-bottom: 24px;
-      box-shadow: 0 2px 16px var(--card-shadow);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.12);
       transition: background 0.3s ease;
     }
 
     h2 {
       font-size: 1.15rem;
       font-weight: 700;
-      color: var(--accent-strong);
+      color: var(--accent);
       margin-bottom: 12px;
       display: flex;
       align-items: center;
@@ -133,7 +114,7 @@
 
     p, li {
       font-size: 0.97rem;
-      color: var(--text-body);
+      color: var(--muted);
     }
 
     ul {
@@ -143,12 +124,12 @@
 
     ul li { margin-bottom: 6px; }
 
-    strong { color: var(--text-main); }
+    strong { color: var(--text); }
 
     .updated {
       text-align: center;
       font-size: 0.85rem;
-      color: var(--text-muted);
+      color: var(--muted);
       margin-top: -16px;
       margin-bottom: 32px;
     }
@@ -157,20 +138,32 @@
       text-align: center;
       padding: 24px 20px;
       font-size: 0.82rem;
-      color: var(--text-muted);
+      color: var(--muted);
       border-top: 1px solid var(--border);
     }
 
-    a { color: var(--accent-strong); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    main a { text-decoration: none; }
+    main a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
 
-<header>
-  <button id="theme-toggle" aria-label="Toggle light/dark theme" onclick="toggleTheme()">🌙</button>
-  <img src="../assets/logo.png" alt="MediMinder logo" />
-  <p class="tagline">Privacy Policy</p>
+<header class="site" id="top">
+  <div class="wrap nav">
+    <a class="brand" href="../" aria-label="MediMinder home">
+      <img src="../assets/logo-full.png" alt="MediMinder logo">
+    </a>
+    <nav class="nav-links">
+      <a href="../#features">Features</a>
+      <a href="../#screens">Screenshots</a>
+      <a href="./">Privacy</a>
+      <a href="../#faq">FAQ</a>
+    </nav>
+    <div class="nav-right">
+      <button class="theme-btn" id="theme-toggle" aria-label="Toggle light/dark theme">🌙</button>
+      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.cipstudioz.mediminder" target="_blank" rel="noopener">Get it on Google Play</a>
+    </div>
+  </div>
 </header>
 
 <main>
@@ -269,20 +262,17 @@
 </footer>
 
 <script>
-  function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    document.getElementById('theme-toggle').textContent = theme === 'dark' ? '🌙' : '☀️';
-  }
-
-  function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('mediminder-theme', next);
-    applyTheme(next);
-  }
-
-  // Defaults to dark unless the visitor previously chose light.
-  applyTheme(localStorage.getItem('mediminder-theme') || 'dark');
+(function(){
+  var root=document.documentElement, btn=document.getElementById('theme-toggle');
+  function sync(){ btn.textContent = root.getAttribute('data-theme')==='dark' ? '🌙' : '☀️'; }
+  btn.addEventListener('click',function(){
+    var t = root.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme',t);
+    try{localStorage.setItem('theme',t)}catch(e){}
+    sync();
+  });
+  sync();
+})();
 </script>
 
 </body>

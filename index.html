@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MediMinder — Medicine Reminder &amp; Health Companion</title>
+<meta name="description" content="MediMinder is a free, offline medicine reminder app with doctor appointments, medical records, adherence tracking and family profiles. No account, no ads, no tracking.">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<style>
+  :root {
+    --bg: #0f1626;
+    --bg-soft: #141d33;
+    --surface: #182444;
+    --text: #eef1f8;
+    --muted: #9aa4bd;
+    --border: #263356;
+    --accent: #7ec8e3;
+
+    --c-blue: #9ecfe8;
+    --c-green: #a8d5b5;
+    --c-yellow: #e6c674;
+    --c-pink: #e3a2a4;
+    --c-purple: #c3a8cf;
+    --c-teal: #94c5be;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  a { color: var(--accent); }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+  /* Header */
+  header.site {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(15, 22, 38, 0.9);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 10px; padding-bottom: 10px; }
+  .brand { display: flex; align-items: center; flex-shrink: 0; }
+  .brand img { height: 56px; width: 56px; border-radius: 14px; display: block; }
+  .nav-links { display: flex; gap: 22px; font-size: .92rem; font-weight: 600; }
+  .nav-links a { color: var(--muted); text-decoration: none; white-space: nowrap; }
+  .nav-links a:hover { color: var(--text); }
+  .nav .btn-primary { flex-shrink: 0; white-space: nowrap; }
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+    .brand img { height: 44px; width: 44px; border-radius: 11px; }
+    .nav .btn-primary { padding: 9px 14px; font-size: .82rem; }
+  }
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: .92rem;
+    text-decoration: none;
+    border: 1px solid transparent;
+  }
+  .btn-primary { background: var(--accent); color: #0a1522; }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-outline { border-color: var(--border); color: var(--text); }
+  .btn-outline:hover { border-color: var(--accent); }
+
+  /* Hero */
+  .hero { padding: 64px 0 40px; }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center; }
+  @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; } }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--c-green); font-size: .8rem; font-weight: 700;
+    padding: 5px 12px; border-radius: 999px; margin-bottom: 18px;
+  }
+  h1 { font-size: 2.5rem; line-height: 1.15; margin: 0 0 16px; letter-spacing: -0.01em; }
+  .hero p.lead { font-size: 1.1rem; color: var(--muted); margin: 0 0 26px; max-width: 46ch; }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 22px; }
+  .trust-row { display: flex; gap: 18px; flex-wrap: wrap; font-size: .85rem; color: var(--muted); }
+  .trust-row span { display: flex; align-items: center; gap: 6px; }
+  .hero-phone { position: relative; justify-self: center; }
+  .hero-phone img {
+    width: 260px; border-radius: 28px; border: 6px solid #05070d;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
+  }
+
+  /* Sections */
+  section { padding: 56px 0; }
+  section.alt { background: var(--bg-soft); }
+  h2 { font-size: 1.9rem; margin: 0 0 12px; letter-spacing: -0.01em; }
+  .section-lead { color: var(--muted); max-width: 60ch; margin: 0 0 36px; font-size: 1.02rem; }
+
+  /* Features */
+  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  @media (max-width: 860px) { .feature-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .feature-grid { grid-template-columns: 1fr; } }
+  .feature {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 20px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .feature .icon {
+    width: 42px; height: 42px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+  }
+  .feature h3 { margin: 0; font-size: 1.05rem; }
+  .feature p { margin: 0; color: var(--muted); font-size: .92rem; }
+  .icon.blue { background: var(--c-blue); }
+  .icon.green { background: var(--c-green); }
+  .icon.yellow { background: var(--c-yellow); }
+  .icon.pink { background: var(--c-pink); }
+  .icon.purple { background: var(--c-purple); }
+  .icon.teal { background: var(--c-teal); }
+
+  /* Screenshot strip */
+  .shot-strip {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px;
+    overflow-x: auto; padding-bottom: 8px;
+  }
+  @media (max-width: 860px) { .shot-strip { grid-template-columns: repeat(3, minmax(140px,1fr)); } }
+  @media (max-width: 560px) { .shot-strip { grid-auto-flow: column; grid-template-columns: none; } }
+  .shot { position: relative; }
+  .shot img {
+    border-radius: 18px; border: 5px solid #05070d;
+    width: 100%; min-width: 130px;
+    box-shadow: 0 16px 32px -14px rgba(0,0,0,0.55);
+  }
+  .shot-cap { text-align: center; font-size: .78rem; color: var(--muted); margin-top: 8px; }
+
+  /* Privacy */
+  .privacy-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+    padding: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  @media (max-width: 700px) { .privacy-card { grid-template-columns: 1fr; } }
+  .privacy-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .privacy-list li { display: flex; gap: 10px; align-items: flex-start; font-size: .95rem; }
+  .privacy-list li .tick { color: var(--c-green); flex-shrink: 0; }
+  .privacy-links { display: flex; flex-direction: column; gap: 10px; align-self: start; }
+  .privacy-links a {
+    background: var(--bg-soft); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; text-decoration: none;
+    color: var(--text); font-size: .9rem; font-weight: 600;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .privacy-links a:hover { border-color: var(--accent); }
+  .privacy-links a .arrow { color: var(--muted); }
+
+  /* Why free */
+  .why-free {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+    padding: 28px 32px;
+  }
+  .why-free p { color: var(--muted); margin: 0 0 12px; }
+  .why-free p:last-child { margin-bottom: 0; }
+  .why-free strong { color: var(--text); }
+
+  /* Comparison table */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: .88rem; min-width: 560px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+  th { background: var(--bg-soft); font-weight: 700; }
+  tr:last-child td { border-bottom: none; }
+  td.yes { color: var(--c-green); font-weight: 700; }
+  td.no { color: var(--muted); }
+  tr.us { background: rgba(126, 200, 227, 0.06); }
+
+  /* FAQ */
+  details {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px 18px; margin-bottom: 12px;
+  }
+  summary { cursor: pointer; font-weight: 700; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--muted); font-size: 1.3rem; font-weight: 400; }
+  details[open] summary::after { content: "–"; }
+  details p { margin: 12px 0 0; color: var(--muted); font-size: .93rem; }
+
+  /* Final CTA */
+  .final-cta { text-align: center; padding: 64px 0 72px; }
+  .final-cta img.logo-lg { width: 120px; border-radius: 24px; margin: 0 auto 22px; }
+  .final-cta h2 { margin-bottom: 10px; }
+  .final-cta p { color: var(--muted); margin: 0 0 26px; }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 30px 0 40px;
+    color: var(--muted); font-size: .85rem;
+  }
+  .footer-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+  .footer-links a { color: var(--muted); text-decoration: none; }
+  .footer-links a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<header class="site" id="top">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="MediMinder home">
+      <img src="assets/logo-full.png" alt="MediMinder logo">
+    </a>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#screens">Screenshots</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.cipstudioz.mediminder" target="_blank" rel="noopener">Get it on Google Play</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">🔒 No account · No ads · No tracking</span>
+      <h1>Never miss a dose. Never lose a report.</h1>
+      <p class="lead">MediMinder keeps medicine reminders, doctor appointments, medical records and your family's health all in one free, offline app — nothing ever leaves your phone.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.cipstudioz.mediminder" target="_blank" rel="noopener">Get it on Google Play</a>
+        <a class="btn btn-outline" href="#features">See what's inside</a>
+      </div>
+      <div class="trust-row">
+        <span>⭐ 5.0 rating on Google Play</span>
+        <span>📴 Works fully offline</span>
+        <span>🆓 Free — no subscription</span>
+      </div>
+    </div>
+    <div class="hero-phone">
+      <img src="assets/screenshots/home.jpg" alt="MediMinder home screen with Add Reminder, Doctor Appointment, Check BMI, Daily Journal, Medical Records and Adherence Analysis tiles">
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <h2>Everything your household needs, in one app</h2>
+    <p class="section-lead">Five things that are usually spread across five different apps — reminders, appointments, records, tracking and family — bundled into one, for free.</p>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="icon blue">⏰</div>
+        <h3>Smart medicine reminders</h3>
+        <p>Custom dosages and schedules, with a full-screen alarm that rings even when your phone is locked — so a dose is never missed to a silenced notification.</p>
+      </div>
+      <div class="feature">
+        <div class="icon green">🗓️</div>
+        <h3>Doctor appointments</h3>
+        <p>Track doctor names, locations and video-call links, with reminders 15 minutes, 1 hour or a day ahead — however much lead time you need.</p>
+      </div>
+      <div class="feature">
+        <div class="icon purple">🩹</div>
+        <h3>Medical records vault</h3>
+        <p>Store prescriptions, lab results and reports as PDFs or photos, tagged and organized — kept only on your device, never uploaded anywhere.</p>
+      </div>
+      <div class="feature">
+        <div class="icon yellow">📊</div>
+        <h3>BMI &amp; health tracking</h3>
+        <p>BMI history with trends over time, plus a daily wellness journal for notes on how you're actually feeling.</p>
+      </div>
+      <div class="feature">
+        <div class="icon teal">📈</div>
+        <h3>Adherence analysis</h3>
+        <p>A calendar heatmap and weekly summary show exactly how consistent you've been — no guessing, no manual tallying.</p>
+      </div>
+      <div class="feature">
+        <div class="icon pink">👨‍👩‍👧</div>
+        <h3>Family profiles</h3>
+        <p>Add profiles for parents, kids or anyone you care for — each with its own reminders, appointments and records, switched in a tap.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="screens">
+  <div class="wrap">
+    <h2>See it in action</h2>
+    <p class="section-lead">Real screens from the app — not mockups.</p>
+    <div class="shot-strip">
+      <div class="shot">
+        <img src="assets/screenshots/home.jpg" alt="MediMinder home screen">
+        <p class="shot-cap">Home screen</p>
+      </div>
+      <div class="shot">
+        <img src="assets/screenshots/add-reminder.jpg" alt="Add a medicine reminder with photo, name and alarm times">
+        <p class="shot-cap">Add a reminder</p>
+      </div>
+      <div class="shot">
+        <img src="assets/screenshots/alarm.jpg" alt="Full-screen medicine alarm with Snooze, Skip and Taken buttons">
+        <p class="shot-cap">Locked-screen alarm</p>
+      </div>
+      <div class="shot">
+        <img src="assets/screenshots/adherence.jpg" alt="Adherence analysis with a weekly bar chart">
+        <p class="shot-cap">Adherence tracking</p>
+      </div>
+      <div class="shot">
+        <img src="assets/screenshots/records.jpg" alt="Medical report detail screen with attached PDF">
+        <p class="shot-cap">Medical records</p>
+      </div>
+      <div class="shot">
+        <img src="assets/screenshots/family.jpg" alt="My Profiles sheet with Add Family Member option">
+        <p class="shot-cap">Family profiles</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="wrap">
+    <h2>Your data stays yours</h2>
+    <p class="section-lead">Not a policy promise you have to trust blindly — a design choice you can verify.</p>
+    <div class="privacy-card">
+      <ul class="privacy-list">
+        <li><span class="tick">✓</span> Works completely offline — no internet required for reminders, records or journaling</li>
+        <li><span class="tick">✓</span> No sign-up or account — nothing to create, nothing to lose access to</li>
+        <li><span class="tick">✓</span> No ads, no analytics, no crash-reporting SDK of any kind</li>
+        <li><span class="tick">✓</span> All medications, appointments, reports and journal entries stay in your device's private storage</li>
+        <li><span class="tick">✓</span> Camera and storage permissions are only used when you choose to attach a photo — never in the background</li>
+        <li><span class="tick">✓</span> Export everything to a file — including Google Drive — and restore it anytime</li>
+      </ul>
+      <div class="privacy-links">
+        <a href="privacy/">Read the full Privacy Policy <span class="arrow">→</span></a>
+        <a href="https://play.google.com/store/apps/datasafety?id=com.cipstudioz.mediminder" target="_blank" rel="noopener">See Google Play's Data safety report <span class="arrow">→</span></a>
+        <a href="mailto:cipstudioz@gmail.com">Email a privacy question <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>Why is it free?</h2>
+    <div class="why-free">
+      <p>MediMinder is built and maintained by a solo developer, not a company. There's no subscription, no ads and no paid tier right now — and that's staying true for at least the next year.</p>
+      <p>Because nothing is collected or sold, there's no data to monetize either. The honest answer to "how do you make money from this?" is: right now, I don't. It's a project built to be genuinely useful, kept simple enough for one person to run without needing ad revenue or a subscription to sustain it.</p>
+      <p>If that ever changes, it won't be by breaking what's already free — <strong>existing features stay free.</strong></p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>How it compares</h2>
+    <p class="section-lead">Most medicine reminder apps make you choose: pay a subscription, accept ads, or lose the features that make it useful for a family. MediMinder doesn't ask you to choose.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Feature</th><th>MediMinder</th><th>Typical reminder apps</th></tr>
+        </thead>
+        <tbody>
+          <tr class="us"><td>Unlimited medicine reminders</td><td class="yes">✓ Free</td><td class="no">Often capped on the free tier</td></tr>
+          <tr class="us"><td>Doctor appointments</td><td class="yes">✓ Free</td><td class="no">Frequently a paid add-on</td></tr>
+          <tr class="us"><td>Medical records vault</td><td class="yes">✓ Free</td><td class="no">Rarely included at all</td></tr>
+          <tr class="us"><td>Family / multiple profiles</td><td class="yes">✓ Free</td><td class="no">Usually gated behind a subscription</td></tr>
+          <tr class="us"><td>Ads</td><td class="yes">Never</td><td class="no">Common on free tiers</td></tr>
+          <tr class="us"><td>Account required</td><td class="yes">Never</td><td class="no">Usually required</td></tr>
+          <tr class="us"><td>Works fully offline</td><td class="yes">✓ Always</td><td class="no">Often needs the cloud</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="faq">
+  <div class="wrap">
+    <h2>Frequently asked questions</h2>
+    <details>
+      <summary>Is MediMinder really completely free?</summary>
+      <p>Yes. There's no subscription, no paid tier and no in-app purchases active. It's built and maintained by a solo developer with no ad or data-monetization model.</p>
+    </details>
+    <details>
+      <summary>Does it need an internet connection?</summary>
+      <p>No. MediMinder works fully offline — reminders, records, appointments and the journal are all stored on your device and don't need a network connection.</p>
+    </details>
+    <details>
+      <summary>What happens to my data if I uninstall the app?</summary>
+      <p>Since everything is stored only on your device, uninstalling removes it. Use the built-in backup feature to export your data to a file (including Google Drive) before uninstalling or switching phones.</p>
+    </details>
+    <details>
+      <summary>Can I manage medicines for my parents or kids too?</summary>
+      <p>Yes — add a profile for each family member from the home screen. Each profile keeps its own reminders, appointments and records, and you can switch between them in a tap.</p>
+    </details>
+    <details>
+      <summary>Will the app always ring, even if my phone is locked or in silent mode?</summary>
+      <p>MediMinder uses Android's full-screen alarm intent so reminders show over the lock screen. For the most reliable delivery, allow the battery-optimization exemption prompt the app shows on first setup.</p>
+    </details>
+    <details>
+      <summary>What permissions does the app need, and why?</summary>
+      <p>Notifications and exact alarms (to ring reminders on time), camera (only when you choose to photograph a medicine or report), and storage access (to save the files you attach). No location, no contacts, no background data collection.</p>
+    </details>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="wrap">
+    <img class="logo-lg" src="assets/logo-full.png" alt="MediMinder logo">
+    <h2>Start staying on top of your health, today</h2>
+    <p>Free. Offline. Private. No account needed.</p>
+    <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.cipstudioz.mediminder" target="_blank" rel="noopener">Get it on Google Play</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <div>© 2026 CIP Studioz. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="privacy/">Privacy Policy</a>
+      <a href="https://play.google.com/store/apps/datasafety?id=com.cipstudioz.mediminder" target="_blank" rel="noopener">Data Safety</a>
+      <a href="mailto:cipstudioz@gmail.com">Contact</a>
+      <a href="https://play.google.com/store/apps/details?id=com.cipstudioz.mediminder" target="_blank" rel="noopener">Google Play</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
